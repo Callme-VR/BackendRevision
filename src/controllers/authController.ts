@@ -3,8 +3,9 @@
 import { prisma } from "../config/db.js";
 import bcrypt from 'bcrypt';
 import { generateToken } from "../utils/generateToken.js";
+import type { Request, Response } from "express";
 
-export const registerUser = async (req: any, res: any) => {
+export const registerUser = async (req: Request, res: Response): Promise<void> => {
   try {
     console.log("=== Registration request received ===");
     console.log("Request body:", req.body);
@@ -22,7 +23,8 @@ export const registerUser = async (req: any, res: any) => {
     });
 
     if (userExisting) {
-      return res.status(400).json({ error: "User already exists" });
+      res.status(400).json({ error: "User already exists" });
+      return;
     }
 
     // Hash the password before storing
@@ -49,7 +51,7 @@ export const registerUser = async (req: any, res: any) => {
 };
 
 
-export const loginUser = async (req: any, res: any) => {
+export const loginUser = async (req: Request, res: Response): Promise<void> => {
   console.log("=== Login request received ===");
   console.log("Request body:", req.body);
   try {
@@ -58,15 +60,15 @@ export const loginUser = async (req: any, res: any) => {
       where: { email }
     })
     if (!user) {
-      return res.status(401).json({ error: "Invalid credentials" });
+      res.status(401).json({ error: "Invalid credentials" });
+      return;
     }
 
     // verify password with bcrypt
-
-
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
     if (!isPasswordCorrect) {
-      return res.status(401).json({ error: "Invalid credentials" });
+      res.status(401).json({ error: "Invalid credentials" });
+      return;
     }
 
     // .generatea a token
@@ -94,7 +96,7 @@ export const loginUser = async (req: any, res: any) => {
 // for the logout user
 
 
-export const logoutUser = async (req: any, res: any) => {
+export const logoutUser = async (req: Request, res: Response): Promise<void> => {
   try {
     res.clearCookie("jwt", {
       httpOnly: true,

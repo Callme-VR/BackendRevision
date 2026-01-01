@@ -1,8 +1,17 @@
 import jwt from "jsonwebtoken";
+import type { Response } from "express";
 
-export const generateToken = (userId: string, res: any) => {
-    const payload = { userId };
-    const token = jwt.sign(payload, process.env.JWT_SECRET as string, { expiresIn: "7d" as const });
+interface JwtPayload {
+  id: string;
+}
+
+export const generateToken = (userId: string, res: Response): string => {
+    if (!process.env.JWT_SECRET) {
+        throw new Error("JWT_SECRET not configured");
+    }
+
+    const payload: JwtPayload = { id: userId };
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "7d" });
 
     res.cookie("jwt", token, {
         httpOnly: true,

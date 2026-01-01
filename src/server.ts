@@ -30,7 +30,9 @@ app.use("/watchlist",watchlistRoutes)
 
 
 
-let server: any;
+import type { Server } from "http";
+
+let server: Server | undefined;
 const startServer = async () => {
   try {
     await connectDb();
