@@ -8,9 +8,11 @@
     "start": "node dist/server.js",
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
+    "seed": "tsx prisma/seed.ts",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
-    "db:push": "prisma db push"
+    "db:push": "prisma db push",
+    "db:seed": "tsx prisma/seed.ts"
   },
   "keywords": [],
   "author": "",

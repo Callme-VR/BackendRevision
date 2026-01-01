@@ -4,6 +4,7 @@ import cors from "cors";
 import movieRoutes from "./routes/movieRoutes.js";
 import { connectDb, disconnectDb, prisma } from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
+import watchlistRoutes from "./routes/watchlistRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -14,7 +15,7 @@ app.use(express.json());
 
 app.use("/movies", movieRoutes);
 app.use("/auth",authRoutes)
-
+app.use("/watchlist",watchlistRoutes)
 
 
 
